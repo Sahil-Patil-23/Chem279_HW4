@@ -520,13 +520,13 @@ class CNDO{
                             }
                         }
                     } else {
-                        cerr << "Key not found in diagCNDOPara for " << chemSymA << " and AO type " << AO_Type << endl;
+                        // cerr << "Key not found in diagCNDOPara for " << chemSymA << " and AO type " << AO_Type << endl;
                     }
                 } else { // Calculate the off-diagonal elements of the matrix
                     if (offDiagCNDOPara.count(chemSymA) > 0 && offDiagCNDOPara.count(chemSymB) > 0) {
                         Fock_Matrix(mu, nu) = (-offDiagCNDOPara.at(chemSymA) - offDiagCNDOPara.at(chemSymB)) / 2.0 * Overlap_Matrix(mu, nu) - (Total_Density(mu) * gammaAB);
                     } else {
-                        cerr << "Key not found in offDiagCNDOPara for " << chemSymA << " or " << chemSymB << endl;
+                        // cerr << "Key not found in offDiagCNDOPara for " << chemSymA << " or " << chemSymB << endl;
                     }
                 }
             }
@@ -699,38 +699,49 @@ int main(){
 
 
     // Using 'HF.txt'
-    // string filepath_HF = "../sample_input/HF.txt";
-    // vector<Atom> HF = Read_Atom_Para(filepath_HF);
-    // CNDO HF_CNDO = CNDO(HF);
-    // arma::mat HF_overlapmat = HF_CNDO.Calculate_OverlapMatrix();
-    // arma::mat HF_Gammamat = HF_CNDO.Calculate_GammaMatrix();
-    // arma::mat HF_Fock = HF_CNDO.Calculate_Fock_Matrix(HF_CNDO.TotalDensity, HF_Gammamat, HF);
-    // cout << HF_Gammamat << endl;
-    // cout << HF_overlapmat << endl;
-    // cout << HF_Fock << endl;
+    string filepath_HF = "../sample_input/HF.txt";
+    vector<Atom> HF = Read_Atom_Para(filepath_HF);
+    CNDO HF_CNDO = CNDO(HF);
+    arma::mat HF_overlapmat = HF_CNDO.Calculate_OverlapMatrix();
+    arma::mat HF_Gammamat = HF_CNDO.Calculate_GammaMatrix();
+    arma::mat HF_Fock = HF_CNDO.Calculate_Fock_Matrix(HF_CNDO.TotalDensity, HF_Gammamat, HF);
+    cout << "gamma" << endl;
+    cout << HF_Gammamat[0] << "  " << HF_Gammamat[1] << endl;
+    cout << HF_Gammamat[1] << "  " << HF_Gammamat[0] << endl;
+    cout << endl;
 
-    // HF_CNDO.SCF_Cycle(HF_Gammamat, HF);
+    cout << "Overlap" << endl;
+    cout << HF_overlapmat << endl;
+    cout << "H_Core" << endl;
+    cout << HF_Fock << endl;
 
-    // cout << endl << endl;
+    HF_CNDO.SCF_Cycle(HF_Gammamat, HF);
+
+    cout << endl << endl;
 
    
 
 
 
     // Using 'HO.txt'
-    // string filepath_HO = "../sample_input/HO.txt";
-    // vector<Atom> HO = Read_Atom_Para(filepath_HO);
-    // CNDO HO_CNDO = CNDO(HO);
-    // arma::mat HO_overlapmat = HO_CNDO.Calculate_OverlapMatrix();
-    // arma::mat HO_Gammamat = HO_CNDO.Calculate_GammaMatrix();
-    // arma::mat HO_Fock = HO_CNDO.Calculate_Fock_Matrix(HO_CNDO.TotalDensity, HO_Gammamat, HO);
-    // cout << HO_overlapmat << endl;
-    // cout << HO_Gammamat << endl;
-    // cout << HO_Fock << endl;
+    string filepath_HO = "../sample_input/HO.txt";
+    vector<Atom> HO = Read_Atom_Para(filepath_HO);
+    CNDO HO_CNDO = CNDO(HO);
+    arma::mat HO_overlapmat = HO_CNDO.Calculate_OverlapMatrix();
+    arma::mat HO_Gammamat = HO_CNDO.Calculate_GammaMatrix();
+    arma::mat HO_Fock = HO_CNDO.Calculate_Fock_Matrix(HO_CNDO.TotalDensity, HO_Gammamat, HO);
+    cout << "gamma" << endl;
+    cout << HO_Gammamat[0] << "  " << HO_Gammamat[1] << endl;
+    cout << HO_Gammamat[1] << "  " << HO_Gammamat[0] << endl;
+    cout << endl;
+    cout << "Overlap" << endl;
+    cout << HO_overlapmat << endl;
+    cout << "H_Core" << endl;
+    cout << HO_Fock << endl;
 
+    HO_CNDO.SCF_Cycle(HO_Gammamat, HO);
+
+    cout << endl << endl;
     
-
-
-
     return 0;
 }
